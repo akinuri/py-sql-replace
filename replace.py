@@ -1,5 +1,6 @@
 from pprint import pprint
 import re
+import urllib.parse
 
 
 #region ==================== DEBUG
@@ -14,7 +15,7 @@ def dump_list(list):
         print("]")
 
 # Mostly for debug/inspection purposes
-def find_str(string, substring, before_length=0, after_length=0):
+def find_str(string, substring, before_length=10, after_length=10):
     matches = []
     for occurence in re.finditer(substring, string, flags=re.IGNORECASE):
         capture_before_start_index = max(occurence.start() - abs(before_length), 0)
@@ -92,11 +93,29 @@ file = open(file_path, "r", encoding="utf-8")
 lines = file.readlines()
 content = "".join(lines)
 
-content = replace_serialized(content, "http://111.22.333.44", "http://example.com")
+input_url  = "http://111.22.333.44/~user"
+target_url = "http://example.com"
+input_dict = {
+    "serialized" : {
+        "url" : input_url,
+    },
+    "normal" : {
+        "url" : input_url,
+    },
+}
+input_dict["normal"]["dbl_escaped_fs"]  = input_url.replace("/", "\\/")
+input_dict["normal"]["encoded"]         = urllib.parse.quote(input_url, safe="")
+input_dict["normal"]["encoded_tilde"]   = urllib.parse.quote(input_url, safe="").replace("~", "%7E")
+input_dict["normal"]["dbl_encoded"]     = urllib.parse.quote(urllib.parse.quote(input_url, safe=""), safe="")
 
-print(content)
+content = replace_serialized(content, input_dict["serialized"]["url"], target_url)
+
+output_file = open("output.sql", "w", encoding="utf-8")
+output_file.write(content)
+output_file.close()
 
 #endregion
 
 
+print("Done")
 input()
