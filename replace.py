@@ -94,7 +94,6 @@ lines = file.readlines()
 content = "".join(lines)
 
 input_url  = "http://111.22.333.44/~user"
-target_url = "http://example.com"
 input_dict = {
     "serialized" : {
         "url" : input_url,
@@ -108,7 +107,22 @@ input_dict["normal"]["encoded"]         = urllib.parse.quote(input_url, safe="")
 input_dict["normal"]["encoded_tilde"]   = urllib.parse.quote(input_url, safe="").replace("~", "%7E")
 input_dict["normal"]["dbl_encoded"]     = urllib.parse.quote(urllib.parse.quote(input_url, safe=""), safe="")
 
-content = replace_serialized(content, input_dict["serialized"]["url"], target_url)
+output_url = "http://example.com"
+output_dict = {
+    "serialized" : {
+        "url" : output_url,
+    },
+    "normal" : {
+        "url" : output_url,
+    },
+}
+output_dict["normal"]["dbl_escaped_fs"]  = output_url.replace("/", "\\/")
+output_dict["normal"]["encoded"]         = urllib.parse.quote(output_url, safe="")
+output_dict["normal"]["encoded_tilde"]   = urllib.parse.quote(output_url, safe="").replace("~", "%7E")
+output_dict["normal"]["dbl_encoded"]     = urllib.parse.quote(urllib.parse.quote(output_url, safe=""), safe="")
+
+content = replace_serialized(content, input_dict["serialized"]["url"], output_dict["serialized"]["url"])
+content = content.replace(input_dict["serialized"]["url"], output_dict["serialized"]["url"])
 
 output_file = open("output.sql", "w", encoding="utf-8")
 output_file.write(content)
