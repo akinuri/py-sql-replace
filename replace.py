@@ -124,7 +124,9 @@ output_dict["normal"]["dbl_encoded"]     = urllib.parse.quote(urllib.parse.quote
 content = replace_serialized(content, input_dict["serialized"]["url"], output_dict["serialized"]["url"])
 content = content.replace(input_dict["serialized"]["url"], output_dict["serialized"]["url"])
 content = content.replace(input_dict["normal"]["dbl_escaped_fs"], output_dict["normal"]["dbl_escaped_fs"])
+content = content.replace(input_dict["normal"]["encoded"], output_dict["normal"]["encoded"])
 content = content.replace(input_dict["normal"]["encoded_tilde"], output_dict["normal"]["encoded_tilde"])
+content = content.replace(input_dict["normal"]["dbl_encoded"], output_dict["normal"]["dbl_encoded"])
 
 output_file = open("output.sql", "w", encoding="utf-8")
 output_file.write(content)
