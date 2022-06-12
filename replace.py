@@ -102,7 +102,7 @@ input_dict = {
         "url" : input_url,
     },
 }
-input_dict["normal"]["dbl_escaped_fs"]  = input_url.replace("/", "\\/")
+input_dict["normal"]["dbl_escaped_fs"]  = input_url.replace("/", r"\\/")
 input_dict["normal"]["encoded"]         = urllib.parse.quote(input_url, safe="")
 input_dict["normal"]["encoded_tilde"]   = urllib.parse.quote(input_url, safe="").replace("~", "%7E")
 input_dict["normal"]["dbl_encoded"]     = urllib.parse.quote(urllib.parse.quote(input_url, safe=""), safe="")
@@ -116,13 +116,15 @@ output_dict = {
         "url" : output_url,
     },
 }
-output_dict["normal"]["dbl_escaped_fs"]  = output_url.replace("/", "\\/")
+output_dict["normal"]["dbl_escaped_fs"]  = output_url.replace("/", r"\\/")
 output_dict["normal"]["encoded"]         = urllib.parse.quote(output_url, safe="")
 output_dict["normal"]["encoded_tilde"]   = urllib.parse.quote(output_url, safe="").replace("~", "%7E")
 output_dict["normal"]["dbl_encoded"]     = urllib.parse.quote(urllib.parse.quote(output_url, safe=""), safe="")
 
 content = replace_serialized(content, input_dict["serialized"]["url"], output_dict["serialized"]["url"])
 content = content.replace(input_dict["serialized"]["url"], output_dict["serialized"]["url"])
+content = content.replace(input_dict["normal"]["dbl_escaped_fs"], output_dict["normal"]["dbl_escaped_fs"])
+content = content.replace(input_dict["normal"]["encoded_tilde"], output_dict["normal"]["encoded_tilde"])
 
 output_file = open("output.sql", "w", encoding="utf-8")
 output_file.write(content)
