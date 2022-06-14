@@ -127,6 +127,8 @@ output_dict["normal"]["url_wo_schema"]   = re.sub("https?://", "", output_url)
 output_dict["normal"]["domain"]          = urllib.parse.urlparse(output_url).netloc
 output_dict["normal"]["path"]            = "home/%username%/htdocs"
 
+content = re.sub("content ?: ?\\\\\"(.*?)\\\\\"", r"content: \'\1\'", content)
+
 content = replace_serialized(content, input_dict["serialized"]["url"], output_dict["serialized"]["url"])
 content = content.replace(input_dict["serialized"]["url"], output_dict["serialized"]["url"])
 content = content.replace(input_dict["normal"]["dbl_escaped_fs"], output_dict["normal"]["dbl_escaped_fs"])
