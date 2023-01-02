@@ -45,6 +45,8 @@ s:125:\"<img src=\"http://111.22.333.44/~user/wp-content/uploads/2021/04/payment
 
 (1569, 240, 'from_header', 'WordPress <wordpress@111.22.333.44>'),
 
+s:4:\"host\";s:12:\"111.22.333.44\";s:9:\"server_ip\";
+
 -- #endregion
 
 
