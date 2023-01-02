@@ -2,13 +2,15 @@ import re
 
 #region ==================== DEBUG
 
-def dump_list(list):
+def dump_list(list, line_seperator=False):
     if len(list) == 0:
         print("[]")
     else:
         print("[")
         for item in list:
+            if line_seperator is not False: print(line_seperator)
             print("  '" + str(item) + "',")
+        if line_seperator is not False: print(line_seperator)
         print("]")
 
 # Mostly for debug/inspection purposes
@@ -57,7 +59,7 @@ def flatten_string(str):
 
 # Finds and replaces serialized strings, and updates the length field.
 def replace_serialized(subject, old_str, new_str):
-    pattern_serialized = "s:\\d+:\\\\\"((?:.(?!s:\\d+))*?)" + re.escape(old_str) + "(.*?)\\\\\";"
+    pattern_serialized = r"s:(?:[1-9]{1}|[1-9]{1}\d+):\\\"((?:.(?!\\\";))*?)" + re.escape(old_str) + "(.*?)\\\";"
     subject = re.sub(
         pattern_serialized,
         lambda match: replace_serialized_callback(match, old_str, new_str),
@@ -79,7 +81,7 @@ def replace_serialized_callback(match, old_str, new_str):
 
 # Mostly for debug/inspection purposes
 def find_serialized(subject, search_str):
-    pattern_serialized = r"s:\d+:\\\"((?:.(?!s:\d+))*?)" + re.escape(search_str) + "(.*?)\\\";"
+    pattern_serialized = r"s:(?:[1-9]{1}|[1-9]{1}\d+):\\\"((?:.(?!\\\";))*?)" + re.escape(search_str) + "(.*?)\\\";"
     matches = re.finditer(pattern_serialized, subject)
     matches = [match.group(0) for match in matches]
     return matches
