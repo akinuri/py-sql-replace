@@ -59,7 +59,7 @@ def flatten_string(str):
 
 # Finds and replaces serialized strings, and updates the length field.
 def replace_serialized(subject, old_str, new_str):
-    pattern_serialized = r"s:(?:[1-9]{1}|[1-9]{1}\d+):\\\"((?:.(?!\\\";))*?)" + re.escape(old_str) + "(.*?)\\\";"
+    pattern_serialized = "s:(?:[1-9]{1}|[1-9]{1}\d+):\\\\\"((?:.(?!\\\\\";))*?)" + re.escape(old_str) + "(.*?)\\\\\";"
     subject = re.sub(
         pattern_serialized,
         lambda match: replace_serialized_callback(match, old_str, new_str),
